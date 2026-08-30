@@ -1,1 +1,616 @@
+<!-- ... existing code ... -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחירון ויזות עולמי - מסעות ו-AMSVISA</title>
+    <!-- טעינת Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- טעינת פונט Assistant -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Assistant', 'sans-serif'],
+                    },
+                    colors: {
+                        'massaot-dark': '#174a5c',
+                        'massaot-light': '#2a708a',
+                        'ams-cyan': '#00bcd4',
+                        'ams-cyan-light': '#e0f7fa',
+                        'bg-gray': '#f4f7f9',
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+                        'floating': '0 20px 40px -15px rgba(0,188,212,0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* אנימציות ועיצובים מותאמים אישית מעבר ל-Tailwind */
+        body {
+            background-color: #f4f7f9;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
 
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .table-row-hover:hover {
+            transform: scale(1.002);
+            box-shadow: inset 4px 0 0 #00bcd4;
+            background-color: #f8fafc;
+        }
+
+        /* עיצוב פס הגלילה לטבלה */
+        ::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-8">
+                <img src="massaot_Eng.png (1)_3.png" alt="Massaot" class="h-14 md:h-16 object-contain transition-transform hover:scale-105" onerror="this.src='https://placehold.co/200x70/174a5c/ffffff?text=Massaot';">
+                <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
+                <img src="ויזה לוגו סופי (15)_3.jpg" alt="AMSVISA" class="h-14 md:h-16 object-contain transition-transform hover:scale-105" onerror="this.src='https://placehold.co/200x70/00bcd4/ffffff?text=AMSVISA';">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full fade-in-up">
+        
+        <!-- כותרת ראשית -->
+        <div class="text-center mb-10 max-w-3xl mx-auto">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-massaot-dark mb-4 tracking-tight">מחירון אשרות כניסה</h1>
+            <p class="text-lg text-gray-500 font-medium">איתור מהיר של מחירי ויזות לכל יעד בעולם, בהליך קל ומהיר.</p>
+        </div>
+
+        <!-- תיבת חיפוש מתקדמת -->
+        <div class="max-w-2xl mx-auto mb-12 relative group">
+            <div class="absolute inset-0 bg-gradient-to-r from-ams-cyan/20 to-massaot-dark/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-300 opacity-70"></div>
+            <div class="relative bg-white rounded-full p-1.5 shadow-floating flex items-center border border-gray-100 ring-4 ring-white">
+                <div class="pl-4 pr-3 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <input type="text" id="searchInput" 
+                    class="w-full bg-transparent border-none outline-none py-3 px-2 text-lg text-gray-700 placeholder-gray-400 font-medium" 
+                    placeholder="הקלד שם מדינה או סוג אשרה..." autocomplete="off">
+                <button class="bg-massaot-dark hover:bg-massaot-light text-white px-6 py-2.5 rounded-full font-semibold transition-colors duration-200 ml-1">
+                    חיפוש
+                </button>
+            </div>
+        </div>
+
+        <!-- אזור הטבלה -->
+        <div class="bg-white rounded-3xl shadow-soft border border-gray-100 overflow-hidden mb-12">
+            <div class="overflow-x-auto">
+                <table class="w-full text-right border-collapse" id="visasTable">
+                    <thead class="bg-gray-50/80 border-b border-gray-200 text-gray-500 uppercase text-sm font-bold tracking-wider">
+                        <tr>
+                            <th class="px-6 py-5 whitespace-nowrap">יעד / מדינה</th>
+                            <th class="px-6 py-5 whitespace-nowrap">סוג האשרה</th>
+                            <th class="px-6 py-5 whitespace-nowrap">אגרת רשויות</th>
+                            <th class="px-6 py-5 whitespace-nowrap">דמי שירות</th>
+                            <th class="px-6 py-5 whitespace-nowrap bg-ams-cyan/5 text-massaot-dark">סה״כ לתשלום</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-700 font-medium" id="tableBody">
+                        
+                        <!-- שורות הנתונים -->
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/us.png" alt="ארצות הברית" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">ארצות הברית</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">ESTA</span></td>
+                            <td class="px-6 py-4 text-gray-500">$40</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$65</td>
+                        </tr>
+                        
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/us.png" alt="ארצות הברית" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">ארצות הברית</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">B1/B2</span></td>
+                            <td class="px-6 py-4 text-gray-500">$205</td>
+                            <td class="px-6 py-4 text-gray-500">$50</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$255</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/ca.png" alt="קנדה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">קנדה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">eTA</span></td>
+                            <td class="px-6 py-4 text-gray-500">$8</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$33</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/gb.png" alt="בריטניה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">בריטניה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">ETA</span></td>
+                            <td class="px-6 py-4 text-gray-500">$29</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$54</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/au.png" alt="אוסטרליה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">אוסטרליה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">eVisa 600 – תיירות</span></td>
+                            <td class="px-6 py-4 text-gray-500">$240</td>
+                            <td class="px-6 py-4 text-gray-500">$50</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$290</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/nz.png" alt="ניו זילנד" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">ניו זילנד</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">NZeTA</span></td>
+                            <td class="px-6 py-4 text-gray-500">$85</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$110</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/ae.png" alt="איחוד האמירויות" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">איחוד האמירויות</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות / עסקים</span></td>
+                            <td class="px-6 py-4 text-gray-500">$150</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$185</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/in.png" alt="הודו" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">הודו</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות – 30 יום</span></td>
+                            <td class="px-6 py-4 text-gray-500">$28</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$63</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/in.png" alt="הודו" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">הודו</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות – שנה</span></td>
+                            <td class="px-6 py-4 text-gray-500">$50</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$85</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/cn.png" alt="סין" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">סין</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות / עסקים – רגיל</span></td>
+                            <td class="px-6 py-4 text-gray-500">$90</td>
+                            <td class="px-6 py-4 text-gray-500">$50</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$140</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/cn.png" alt="סין" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">סין</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות / עסקים – דחוף</span></td>
+                            <td class="px-6 py-4 text-gray-500">$135</td>
+                            <td class="px-6 py-4 text-gray-500">$50</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$185</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/th.png" alt="תאילנד" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">תאילנד</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">TDAC</span></td>
+                            <td class="px-6 py-4 text-gray-500">$0</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$25</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/il.png" alt="ישראל" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">ישראל</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">ETA-IL</span></td>
+                            <td class="px-6 py-4 text-gray-500">$10</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$35</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/vn.png" alt="וייטנאם" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">וייטנאם</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">eVisa – רגיל</span></td>
+                            <td class="px-6 py-4 text-gray-500">$45</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$80</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/vn.png" alt="וייטנאם" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">וייטנאם</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">eVisa – מהיר</span></td>
+                            <td class="px-6 py-4 text-gray-500">$50</td>
+                            <td class="px-6 py-4 text-gray-500">$40</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$90</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/ma.png" alt="מרוקו" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">מרוקו</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות / עסקים – רגיל</span></td>
+                            <td class="px-6 py-4 text-gray-500">$90</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$125</td>
+                        </tr>
+
+                        <!-- החזרת השורה של מרוקו מהיר -->
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/ma.png" alt="מרוקו" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">מרוקו</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות / עסקים – מהיר</span></td>
+                            <td class="px-6 py-4 text-gray-500">$125</td>
+                            <td class="px-6 py-4 text-gray-500">$55</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$180</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/et.png" alt="אתיופיה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">אתיופיה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות</span></td>
+                            <td class="px-6 py-4 text-gray-500">$85</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$120</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/ke.png" alt="קניה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">קניה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">eTA – כניסה אחת</span></td>
+                            <td class="px-6 py-4 text-gray-500">$33</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$68</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/tz.png" alt="טנזניה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">טנזניה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות</span></td>
+                            <td class="px-6 py-4 text-gray-500">$55</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$90</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/ug.png" alt="אוגנדה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">אוגנדה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות</span></td>
+                            <td class="px-6 py-4 text-gray-500">$50</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$85</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/bh.png" alt="בחריין" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">בחריין</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות / עסקים</span></td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$60</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/ng.png" alt="ניגריה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">ניגריה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">eVisa תיירות</span></td>
+                            <td class="px-6 py-4 text-gray-500">$660</td>
+                            <td class="px-6 py-4 text-gray-500">$50</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$710</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/mm.png" alt="מיאנמר" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">מיאנמר</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות</span></td>
+                            <td class="px-6 py-4 text-gray-500">$55</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$90</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/mg.png" alt="מדגסקר" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">מדגסקר</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות</span></td>
+                            <td class="px-6 py-4 text-gray-500">$15</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$50</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/sc.png" alt="סיישל" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">סיישל</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">Travel Authorization</span></td>
+                            <td class="px-6 py-4 text-gray-500">$20</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$45</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/am.png" alt="ארמניה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">ארמניה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">תיירות / עסקים – 21 יום</span></td>
+                            <td class="px-6 py-4 text-gray-500">$10</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$45</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/az.png" alt="אזרבייג'ן" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">אזרבייג'ן</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">ASAN eVisa</span></td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$70</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/kr.png" alt="קוריאה הדרומית" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">קוריאה הדרומית</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">K-ETA</span></td>
+                            <td class="px-6 py-4 text-gray-500">$8</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$33</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/lk.png" alt="סרי לנקה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">סרי לנקה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">ETA</span></td>
+                            <td class="px-6 py-4 text-gray-500">$60</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$95</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/ph.png" alt="הפיליפינים" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">הפיליפינים</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">eTravel</span></td>
+                            <td class="px-6 py-4 text-gray-500">$0</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$25</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/sg.png" alt="סינגפור" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">סינגפור</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">SG Arrival Card</span></td>
+                            <td class="px-6 py-4 text-gray-500">$0</td>
+                            <td class="px-6 py-4 text-gray-500">$25</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$25</td>
+                        </tr>
+
+                        <tr class="table-row-hover transition-all duration-200">
+                            <td class="px-6 py-4 flex items-center gap-3">
+                                <img src="https://flagcdn.com/w40/cu.png" alt="קובה" class="w-8 h-auto shadow-sm border border-gray-100 rounded-sm">
+                                <span class="font-bold text-massaot-dark text-lg">קובה</span>
+                            </td>
+                            <td class="px-6 py-4"><span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-md text-sm">eVisa</span></td>
+                            <td class="px-6 py-4 text-gray-500">$85</td>
+                            <td class="px-6 py-4 text-gray-500">$35</td>
+                            <td class="px-6 py-4 font-bold text-lg text-ams-cyan bg-ams-cyan/5">$120</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- הודעה כשאין תוצאות חיפוש -->
+            <div id="noResults" class="hidden text-center py-16 px-4">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-700 mb-1">לא נמצאו תוצאות</h3>
+                <p class="text-gray-500">נסה לחפש מדינה אחרת או לבדוק את האיות.</p>
+            </div>
+        </div>
+
+        <!-- אזור שירותי משלוח (UPS) המעודכן - מידע בלבד -->
+        <div class="mt-8 bg-white rounded-3xl shadow-soft p-6 sm:p-8 border border-gray-100 max-w-4xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-r-4 border-r-ams-cyan">
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ams-cyan"><rect width="16" height="13" x="6" y="4" rx="2"/><path d="M22 17v-3.51a2.19 2.19 0 0 0-1.24-1.94l-3.18-1.59a1.43 1.43 0 0 0-1.58.13V4"/><path d="M2 17h20"/><path d="M6 17v2a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-2"/></svg>
+                    <h2 class="text-2xl font-bold text-massaot-dark">שירותי שליחויות (UPS)</h2>
+                </div>
+                <p class="text-gray-500 text-sm">תוספת עבור שילוח מסמכים ודרכונים.</p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                <div class="flex items-center justify-between gap-4 p-4 rounded-2xl border-2 border-gray-100 bg-gray-50 flex-1 md:w-56">
+                    <span class="text-base font-medium text-gray-700">משלוח דרכון כיוון אחד</span>
+                    <span class="text-xl font-bold text-massaot-dark">$25</span>
+                </div>
+
+                <div class="flex items-center justify-between gap-4 p-4 rounded-2xl border-2 border-gray-100 bg-gray-50 flex-1 md:w-56">
+                    <span class="text-base font-medium text-gray-700">משלוח דרכון הלוך וחזור</span>
+                    <span class="text-xl font-bold text-massaot-dark">$50</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-massaot-dark mt-auto">
+        <div class="max-w-7xl mx-auto px-6 py-6 text-center">
+            <p class="text-ams-cyan-light/80 text-sm font-medium">המחירים נתונים לשינויים בכל עת על פי החלטת הרשויות המנפיקות.</p>
+        </div>
+    </footer>
+
+    <!-- סקריפט לחיפוש -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const tableRows = document.querySelectorAll('#tableBody tr');
+            const noResultsMsg = document.getElementById('noResults');
+            const tableHeader = document.querySelector('thead');
+
+            // מילון מילים נרדפות נפוצות לעזרה בחיפוש (כדי שיהיה אפשר לחפש לפי הקוד המקורי גם)
+            const synonyms = {
+                "us": "ארצות הברית", "usa": "ארצות הברית", "ארהב": "ארצות הברית אמריקה", "אמריקה": "ארצות הברית",
+                "uk": "בריטניה אנגליה", "gb": "בריטניה אנגליה", "אנגליה": "בריטניה", "בריטניה": "אנגליה",
+                "vn": "וייטנאם", "ויאטנם": "וייטנאם",
+                "ae": "איחוד האמירויות", "דובאי": "איחוד האמירויות אבו דאבי", "אמירויות": "איחוד האמירויות דובאי אבו דאבי",
+                "nz": "ניו זילנד", "ניוזילנד": "ניו זילנד",
+                "lk": "סרי לנקה", "סרילנקה": "סרי לנקה",
+                "kr": "קוריאה הדרומית", "דרום קוריאה": "קוריאה הדרומית",
+                "au": "אוסטרליה", "ca": "קנדה", "th": "תאילנד", "cn": "סין", "in": "הודו",
+                "il": "ישראל", "ma": "מרוקו", "et": "אתיופיה", "ke": "קניה", "tz": "טנזניה",
+                "ug": "אוגנדה", "bh": "בחריין", "ng": "ניגריה", "mm": "מיאנמר", "mg": "מדגסקר",
+                "sc": "סיישל", "am": "ארמניה", "az": "אזרבייג'ן", "ph": "הפיליפינים", "sg": "סינגפור", "cu": "קובה"
+            };
+
+            searchInput.addEventListener('input', function() {
+                let searchTerm = this.value.toLowerCase().trim();
+                
+                // הוספת מילים נרדפות למונח החיפוש אם קיימות במילון
+                let extendedSearchTerm = searchTerm;
+                for (let key in synonyms) {
+                    if (searchTerm.includes(key)) {
+                        extendedSearchTerm += " " + synonyms[key];
+                    }
+                }
+                
+                const searchTermsArray = extendedSearchTerm.split(' ').filter(term => term.length > 0);
+                let hasVisibleRows = false;
+
+                tableRows.forEach(row => {
+                    const countryCell = row.cells[0].textContent.toLowerCase();
+                    const visaType = row.cells[1].textContent.toLowerCase();
+                    const fullRowText = countryCell + " " + visaType;
+                    
+                    // בודק אם כל מילות החיפוש נמצאות בשורה
+                    const matchesSearch = searchTermsArray.every(term => fullRowText.includes(term));
+
+                    if (searchTermsArray.length === 0 || matchesSearch) {
+                        row.style.display = '';
+                        hasVisibleRows = true;
+                        // אפקט כניסה מחדש לשורות שנמצאו
+                        row.style.animation = 'none';
+                        row.offsetHeight; 
+                        row.style.animation = null; 
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // הצגה/הסתרה של הודעת "אין תוצאות" וכותרות הטבלה
+                if (hasVisibleRows || searchTermsArray.length === 0) {
+                    noResultsMsg.classList.add('hidden');
+                    tableHeader.style.display = '';
+                } else {
+                    noResultsMsg.classList.remove('hidden');
+                    tableHeader.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
